@@ -1,0 +1,1248 @@
+<!DOCTYPE html><html lang="fr"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Irlande 2026 - To Do List</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #1a472a 0%, #2d5016 100%);
+            min-height: 100vh;
+            padding: 12px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #fff;
+            text-align: center;
+            font-size: 1.6rem;
+            margin-bottom: 8px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            color: #a8d5a2;
+            text-align: center;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+        
+        .day-card {
+            background: #fff;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        
+        .day-header {
+            background: linear-gradient(135deg, #2e7d32 0%, #388e3c 100%);
+            color: #fff;
+            padding: 14px 16px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+        
+        .day-header:hover {
+            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+        }
+        
+        .day-title {
+            font-weight: 700;
+            font-size: 1.05rem;
+        }
+        
+        .day-subtitle {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-top: 2px;
+        }
+        
+        .day-arrow {
+            font-size: 1.3rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .day-card.open .day-arrow {
+            transform: rotate(180deg);
+        }
+        
+        .day-content {
+            display: none;
+            padding: 12px 16px 16px;
+        }
+        
+        .day-card.open .day-content {
+            display: block;
+        }
+        
+        .hotel-badge {
+            background: #e8f5e9;
+            border: 1px solid #a5d6a7;
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 14px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .task-section {
+            margin-bottom: 12px;
+        }
+        
+        .task-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .section-title {
+            font-size: 0.8rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .task {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        
+        .task:last-child {
+            border-bottom: none;
+        }
+        
+        .task input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            margin-top: 2px;
+            accent-color: #2e7d32;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+        
+        .task-content {
+            flex: 1;
+        }
+        
+        .task-time {
+            font-size: 0.8rem;
+            color: #888;
+            font-weight: 500;
+        }
+        
+        .task-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #333;
+            margin: 2px 0;
+        }
+        
+        .task-detail {
+            font-size: 0.85rem;
+            color: #666;
+            line-height: 1.4;
+        }
+        
+        .task.checked .task-title,
+        .task.checked .task-detail,
+        .task.checked .task-time {
+            text-decoration: line-through;
+            opacity: 0.5;
+        }
+        
+        .tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-right: 4px;
+            font-weight: 500;
+        }
+        
+        .tag-whiskey {
+            background: #fff3e0;
+            color: #e65100;
+        }
+        
+        .tag-rando {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .tag-crochet {
+            background: #fce4ec;
+            color: #c2185b;
+        }
+        
+        .tag-photo {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+        
+        .tag-food {
+            background: #fff8e1;
+            color: #ff8f00;
+        }
+        
+        .tag-music {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+        
+        .progress-bar {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            height: 8px;
+            margin: 16px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #a8d5a2, #4caf50);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            color: #a8d5a2;
+            text-align: center;
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+        }
+        
+        .legend {
+            background: rgba(255,255,255,0.95);
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+        }
+        
+        .legend-title {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 8px;
+        }
+        
+        .legend-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🍀 Irlande 2026</h1>
+        <p class="subtitle">Mardi 28 avril – Vendredi 8 mai</p>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+        <p class="progress-text"><span id="progressText">0</span> tâches complétées</p>
+        
+        <div class="legend">
+            <div class="legend-title">Légende</div>
+            <div class="legend-items">
+                <span class="tag tag-whiskey">🥃 Distillerie</span>
+                <span class="tag tag-rando">🥾 Rando</span>
+                <span class="tag tag-crochet">🧶 Crochet</span>
+                <span class="tag tag-photo">📸 Photo</span>
+                <span class="tag tag-food">🍽️ Food</span>
+                <span class="tag tag-music">🎶 Musique</span>
+            </div>
+        </div>
+
+        <!-- JOUR 1 - Mar 28 avril -->
+        <div class="day-card open">
+            <div class="day-header" onclick="toggleDay(this)">
+                <div>
+                    <div class="day-title">📅 Mar 28 avril</div>
+                    <div class="day-subtitle">Départ Ferry Cherbourg</div>
+                </div>
+                <span class="day-arrow">▼</span>
+            </div>
+            <div class="day-content">
+                <div class="hotel-badge">🛏️ Nuit sur le ferry</div>
+                <div class="task-section">
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">Après-midi</div>
+                            <div class="task-title">🚗 Route vers Cherbourg</div>
+                            <div class="task-detail">Arriver 1h30 avant l'embarquement</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">16h30</div>
+                            <div class="task-title">⛴️ Embarquement ferry</div>
+                            <div class="task-detail">Cherbourg → Dublin / Arrivée ~11h le 29</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JOUR 2 - Mer 29 avril -->
+        <div class="day-card">
+            <div class="day-header" onclick="toggleDay(this)">
+                <div>
+                    <div class="day-title">📅 Mer 29 avril</div>
+                    <div class="day-subtitle">Dublin → Cork • Midleton</div>
+                </div>
+                <span class="day-arrow">▼</span>
+            </div>
+            <div class="day-content">
+                <div class="hotel-badge">🛏️ Belvedere Lodge, Cork</div>
+                <div class="task-section">
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">~11h</div>
+                            <div class="task-title">⛴️ Arrivée Dublin Port</div>
+                            <div class="task-detail">Débarquement avec la voiture</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">11h30</div>
+                            <div class="task-title">🚗 Route Dublin → Midleton</div>
+                            <div class="task-detail">2h45 via M7/M8</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">14h15</div>
+                            <div class="task-title">🍽️ Déjeuner Midleton</div>
+                            <div class="task-detail"><span class="tag tag-food">🍽️ Food</span></div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">15h30</div>
+                            <div class="task-title">🥃 Midleton Distillery</div>
+                            <div class="task-detail"><span class="tag tag-whiskey">🥃 Distillerie</span> Visite 1h30 + dégustation Jameson, Redbreast</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">17h</div>
+                            <div class="task-title">🚗 Route → Cork</div>
+                            <div class="task-detail">25 min</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">17h30</div>
+                            <div class="task-title">🏨 Check-in Belvedere Lodge</div>
+                            <div class="task-detail">Installation</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">Soir</div>
+                            <div class="task-title">🌆 Balade Cork + dîner</div>
+                            <div class="task-detail">Jolis quais</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JOUR 3 - Jeu 30 avril -->
+        <div class="day-card">
+            <div class="day-header" onclick="toggleDay(this)">
+                <div>
+                    <div class="day-title">📅 Jeu 30 avril</div>
+                    <div class="day-subtitle">Blarney • Cobh • Kinsale</div>
+                </div>
+                <span class="day-arrow">▼</span>
+            </div>
+            <div class="day-content">
+                <div class="hotel-badge">🛏️ Belvedere Lodge, Cork</div>
+                <div class="task-section">
+                    <div class="section-title">🏰 Blarney</div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">9h</div>
+                            <div class="task-title">🚗 Route → Blarney</div>
+                            <div class="task-detail">20 min</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">9h30</div>
+                            <div class="task-title">🏰 Blarney Castle &amp; Gardens</div>
+                            <div class="task-detail"><span class="tag tag-rando">🥾 Rando</span> <strong>Mari :</strong> Boucle complète jardins + Rock Close + Lake Walk (5-6 km, 1h30-2h)</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">🧶 Spot crochet Blarney</div>
+                            <div class="task-detail"><span class="tag tag-crochet">🧶 Crochet</span> Jardins empoisonnés + Fern Garden (45 min) puis banc vue château</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="task-section">
+                    <div class="section-title">⛵ Cobh</div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">11h30</div>
+                            <div class="task-title">🚗 Route → Cobh</div>
+                            <div class="task-detail">30 min</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">12h</div>
+                            <div class="task-title">📸 Balade Cobh</div>
+                            <div class="task-detail"><span class="tag tag-photo">📸 Photo</span> <span class="tag tag-crochet">🧶 Crochet</span> Front de mer, maisons colorées / Spot : bancs promenade face à la rade</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">13h30</div>
+                            <div class="task-title">🦐 Déjeuner Cobh</div>
+                            <div class="task-detail"><span class="tag tag-food">🍽️ Food</span> Fruits de mer !</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="task-section">
+                    <div class="section-title">🎨 Kinsale</div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">15h</div>
+                            <div class="task-title">🚗 Route → Kinsale</div>
+                            <div class="task-detail">45 min</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">15h45</div>
+                            <div class="task-title">🥾 Rando mari Kinsale</div>
+                            <div class="task-detail"><span class="tag tag-rando">🥾 Rando</span> Scilly Walk → Charles Fort → Summercove (6 km A/R, 1h30)</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">🧶 Spot crochet Kinsale</div>
+                            <div class="task-detail"><span class="tag tag-crochet">🧶 Crochet</span> Balade port + ruelles (30-45 min) / Spot : terrasse Bulman Bar ou bancs port</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">18h30</div>
+                            <div class="task-title">🚗 Retour Cork + dîner</div>
+                            <div class="task-detail">30 min</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JOUR 4 - Ven 1er mai -->
+        <div class="day-card">
+            <div class="day-header" onclick="toggleDay(this)">
+                <div>
+                    <div class="day-title">📅 Ven 1er mai</div>
+                    <div class="day-subtitle">Cork → Killarney • Muckross</div>
+                </div>
+                <span class="day-arrow">▼</span>
+            </div>
+            <div class="day-content">
+                <div class="hotel-badge">🛏️ Salmon Leap Farm, Killarney</div>
+                <div class="task-section">
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">9h</div>
+                            <div class="task-title">🏨 Check-out Belvedere Lodge</div>
+                            <div class="task-detail">Petit-déj + départ</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">9h45</div>
+                            <div class="task-title">🚗 Route Cork → Killarney</div>
+                            <div class="task-detail">1h30</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">11h15</div>
+                            <div class="task-title">🏨 Arrivée Salmon Leap Farm</div>
+                            <div class="task-detail">Dépôt bagages</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="task-section">
+                    <div class="section-title">🌺 Muckross</div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">11h45</div>
+                            <div class="task-title">🌺 Muckross House &amp; Gardens</div>
+                            <div class="task-detail"><span class="tag tag-rando">🥾 Rando</span> <strong>Mari :</strong> Muckross Lake Loop (10 km) ou Arthur Young's Walk (5 km) - 2h-2h30</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">🧶 Spot crochet Muckross</div>
+                            <div class="task-detail"><span class="tag tag-crochet">🧶 Crochet</span> Jardins + bord du lac (45 min-1h) / Spot : bancs jardins vue lac ou terrasse Garden Restaurant</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">14h45</div>
+                            <div class="task-title">🍽️ Déjeuner Garden Restaurant</div>
+                            <div class="task-detail"><span class="tag tag-food">🍽️ Food</span> Muckross</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="task-section">
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">16h</div>
+                            <div class="task-title">🐑 Retour Salmon Leap Farm</div>
+                            <div class="task-detail">Repos, découverte ferme</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">Soir</div>
+                            <div class="task-title">🍺 Dîner Killarney centre</div>
+                            <div class="task-detail">Pubs, ambiance !</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JOUR 5 - Sam 2 mai -->
+        <div class="day-card">
+            <div class="day-header" onclick="toggleDay(this)">
+                <div>
+                    <div class="day-title">📅 Sam 2 mai</div>
+                    <div class="day-subtitle">Ring of Kerry • Torc Waterfall</div>
+                </div>
+                <span class="day-arrow">▼</span>
+            </div>
+            <div class="day-content">
+                <div class="hotel-badge">🛏️ Salmon Leap Farm, Killarney</div>
+                <div class="task-section">
+                    <div class="section-title">🛣️ Ring of Kerry</div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">9h15</div>
+                            <div class="task-title">🚗 Départ Ring of Kerry</div>
+                            <div class="task-detail">Sens anti-horaire (moins de bus !)</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">10h</div>
+                            <div class="task-title">📸 Ladies View</div>
+                            <div class="task-detail"><span class="tag tag-photo">📸 Photo</span> Vue panoramique</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">10h45</div>
+                            <div class="task-title">📸 Moll's Gap</div>
+                            <div class="task-detail"><span class="tag tag-photo">📸 Photo</span></div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">11h15</div>
+                            <div class="task-title">☕ Sneem</div>
+                            <div class="task-detail">Village coloré, pause café</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="task-section">
+                    <div class="section-title">🏖️ Derrynane</div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">12h30</div>
+                            <div class="task-title">🥾 Rando mari Derrynane</div>
+                            <div class="task-detail"><span class="tag tag-rando">🥾 Rando</span> Derrynane National Park loop (5-7 km, 1h30) - plages, dunes, ruines abbaye</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">🧶 Spot crochet Derrynane</div>
+                            <div class="task-detail"><span class="tag tag-crochet">🧶 Crochet</span> Plage + sentier Abbey Island (1-2 km plat, 30-45 min) / Spot : rochers plage ou bancs parking vue mer</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">14h</div>
+                            <div class="task-title">🍽️ Déjeuner</div>
+                            <div class="task-detail"><span class="tag tag-food">🍽️ Food</span> Pique-nique ou Caherdaniel</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="task-section">
+                    <div class="section-title">🛣️ Suite Ring</div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">15h</div>
+                            <div class="task-title">📸 Waterville</div>
+                            <div class="task-detail"><span class="tag tag-photo">📸 Photo</span> Statue Charlie Chaplin</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">16h</div>
+                            <div class="task-title">🚗 Route → Killarney</div>
+                            <div class="task-detail">Via Cahersiveen (1h30)</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="task-section">
+                    <div class="section-title">💧 Torc Waterfall</div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">17h30</div>
+                            <div class="task-title">🥾 Rando mari Torc</div>
+                            <div class="task-detail"><span class="tag tag-rando">🥾 Rando</span> Torc Mountain summit (7 km A/R, 365m dénivelé, 2h) - panorama incroyable !</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">🧶 Spot crochet Torc</div>
+                            <div class="task-detail"><span class="tag tag-crochet">🧶 Crochet</span> Sentier cascade (500m, escaliers, 30 min) / Spot : bancs face cascade</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">Soir</div>
+                            <div class="task-title">🍽️ Retour + dîner Killarney</div>
+                            <div class="task-detail"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JOUR 6 - Dim 3 mai -->
+        <div class="day-card">
+            <div class="day-header" onclick="toggleDay(this)">
+                <div>
+                    <div class="day-title">📅 Dim 3 mai</div>
+                    <div class="day-subtitle">Killarney → Burren → Galway</div>
+                </div>
+                <span class="day-arrow">▼</span>
+            </div>
+            <div class="day-content">
+                <div class="hotel-badge">🛏️ Flannery's Hotel, Galway</div>
+                <div class="task-section">
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">9h</div>
+                            <div class="task-title">🏨 Check-out Salmon Leap Farm</div>
+                            <div class="task-detail">Petit-déj + départ</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">10h</div>
+                            <div class="task-title">🚗 Route → Doolin</div>
+                            <div class="task-detail">2h via Limerick, N18</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">12h</div>
+                            <div class="task-title">🍽️ Déjeuner Doolin</div>
+                            <div class="task-detail"><span class="tag tag-food">🍽️ Food</span> <span class="tag tag-music">🎶 Musique</span> Village musique trad</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="task-section">
+                    <div class="section-title">🪨 Le Burren</div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">13h15</div>
+                            <div class="task-title">🥾 Rando mari Burren</div>
+                            <div class="task-detail"><span class="tag tag-rando">🥾 Rando</span> Burren Way : Fanore → Black Head (8-10 km, 2h) - paysage lunaire, côte sauvage</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">🧶 Spot crochet Burren</div>
+                            <div class="task-detail"><span class="tag tag-crochet">🧶 Crochet</span> Poulnabrone Dolmen (5 min marche) + Caher Valley (1-2 km plat, 45 min-1h) / Spot : murets pierre sèche ou bancs parking</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">15h30</div>
+                            <div class="task-title">🚗 Route côtière → Galway</div>
+                            <div class="task-detail">1h15 via Black Head 🌊</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="task-section">
+                    <div class="section-title">🍺 Galway</div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">16h45</div>
+                            <div class="task-title">🏨 Check-in Flannery's Hotel</div>
+                            <div class="task-detail">Installation</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">17h30</div>
+                            <div class="task-title">🚶 Balade Quay Street / Latin Quarter</div>
+                            <div class="task-detail"><span class="tag tag-crochet">🧶 Crochet</span> Spot : terrasse café Spanish Arch, vue rivière</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">18h30</div>
+                            <div class="task-title">🥃 Micil Distillery</div>
+                            <div class="task-detail"><span class="tag tag-whiskey">🥃 Distillerie</span> Visite 45 min + dégustation poitín &amp; gin</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">19h30</div>
+                            <div class="task-title">🎶 Soirée pubs !</div>
+                            <div class="task-detail"><span class="tag tag-music">🎶 Musique</span> Musique trad live : Tig Coili, The Crane Bar, Taaffes</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JOUR 7 - Lun 4 mai -->
+        <div class="day-card">
+            <div class="day-header" onclick="toggleDay(this)">
+                <div>
+                    <div class="day-title">📅 Lun 4 mai</div>
+                    <div class="day-subtitle">Galway → Connemara</div>
+                </div>
+                <span class="day-arrow">▼</span>
+            </div>
+            <div class="day-content">
+                <div class="hotel-badge">🛏️ Delphi Resort, Leenane</div>
+                <div class="task-section">
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">9h</div>
+                            <div class="task-title">🏨 Check-out Flannery's</div>
+                            <div class="task-detail">Petit-déj + départ</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">9h45</div>
+                            <div class="task-title">🚗 Route → Kylemore Abbey</div>
+                            <div class="task-detail">1h15</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="task-section">
+                    <div class="section-title">🏰 Kylemore Abbey</div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">11h</div>
+                            <div class="task-title">🥾 Rando mari Kylemore</div>
+                            <div class="task-detail"><span class="tag tag-rando">🥾 Rando</span> Nature trails - toutes boucles (6-7 km, 1h30-2h) - forêt, lacs, viewpoints</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">🧶 Spot crochet Kylemore</div>
+                            <div class="task-detail"><span class="tag tag-crochet">🧶 Crochet</span> Jardins victoriens + bord du lac (45 min-1h) / Spot : salon de thé vue abbaye 🍰 ou bancs jardin clos</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">13h30</div>
+                            <div class="task-title">🍽️ Déjeuner Mitchell's Café</div>
+                            <div class="task-detail"><span class="tag tag-food">🍽️ Food</span> Kylemore</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="task-section">
+                    <div class="section-title">🏖️ Dog's Bay</div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">14h45</div>
+                            <div class="task-title">🚗 Route → Roundstone</div>
+                            <div class="task-detail">30 min - village de pêcheurs</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">15h15</div>
+                            <div class="task-title">🥾 Rando mari Dog's Bay</div>
+                            <div class="task-detail"><span class="tag tag-rando">🥾 Rando</span> Boucle Errisbeg Mountain (5 km, 300m dénivelé, 1h30-2h) - vue 360° sur les baies</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">🧶 Spot crochet Dog's Bay</div>
+                            <div class="task-detail"><span class="tag tag-crochet">🧶 Crochet</span> Plage sable blanc (30-45 min balade) / Spot : dunes vue mer</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="task-section">
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">17h30</div>
+                            <div class="task-title">🚗 Route → Delphi Resort</div>
+                            <div class="task-detail">45 min via Leenane</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">18h15</div>
+                            <div class="task-title">🏨 Check-in Delphi Resort</div>
+                            <div class="task-detail">Installation, spa ? 💆</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">Soir</div>
+                            <div class="task-title">🍽️ Dîner au resort</div>
+                            <div class="task-detail"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JOUR 8 - Mar 5 mai -->
+        <div class="day-card">
+            <div class="day-header" onclick="toggleDay(this)">
+                <div>
+                    <div class="day-title">📅 Mar 5 mai</div>
+                    <div class="day-subtitle">Connemara sauvage</div>
+                </div>
+                <span class="day-arrow">▼</span>
+            </div>
+            <div class="day-content">
+                <div class="hotel-badge">🛏️ Delphi Resort, Leenane</div>
+                <div class="task-section">
+                    <div class="section-title">🌊 Killary Fjord</div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">9h</div>
+                            <div class="task-title">☕ Petit-déj au resort</div>
+                            <div class="task-detail">Vue montagnes</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">10h</div>
+                            <div class="task-title">🥾 Rando mari Killary</div>
+                            <div class="task-detail"><span class="tag tag-rando">🥾 Rando</span> Killary Harbour Trail (10-12 km, ~200m dénivelé, 2h30) - seul fjord d'Irlande</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">🧶 Spot crochet Killary</div>
+                            <div class="task-detail"><span class="tag tag-crochet">🧶 Crochet</span> Famine Walk début (2 km A/R, plat, 45 min-1h) / Spot : bancs Killary Sheep Farm Café 🐑 vue fjord</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">12h30</div>
+                            <div class="task-title">🍖 Déjeuner Killary Sheep Farm</div>
+                            <div class="task-detail"><span class="tag tag-food">🍽️ Food</span> Agneau local !</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="task-section">
+                    <div class="section-title">🌲 Delphi Valley</div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">14h30</div>
+                            <div class="task-title">🥾 Rando mari Delphi</div>
+                            <div class="task-detail"><span class="tag tag-rando">🥾 Rando</span> Glenummera Trail ou Ben Lugmore base (8-10 km, dénivelé modéré, 2h-2h30) - vallée glaciaire</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">🧶 Spot crochet Delphi</div>
+                            <div class="task-detail"><span class="tag tag-crochet">🧶 Crochet</span> Balade Delphi Lodge grounds (1-2 km plat, 30-45 min) / Spot : terrasse resort vue vallée ou bancs bord rivière</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">17h</div>
+                            <div class="task-title">💆 Retour resort</div>
+                            <div class="task-detail">Spa, repos</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">Soir</div>
+                            <div class="task-title">🍽️ Dîner resort ou Leenane</div>
+                            <div class="task-detail"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JOUR 9 - Mer 6 mai -->
+        <div class="day-card">
+            <div class="day-header" onclick="toggleDay(this)">
+                <div>
+                    <div class="day-title">📅 Mer 6 mai</div>
+                    <div class="day-subtitle">Distilleries • Portlaoise</div>
+                </div>
+                <span class="day-arrow">▼</span>
+            </div>
+            <div class="day-content">
+                <div class="hotel-badge">🛏️ The Killeshin Hotel, Portlaoise</div>
+                <div class="task-section">
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">8h30</div>
+                            <div class="task-title">🏨 Check-out Delphi Resort</div>
+                            <div class="task-detail">Petit-déj + départ</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">9h15</div>
+                            <div class="task-title">🚗 Route → Westport</div>
+                            <div class="task-detail">45 min - pause café rapide ☕</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">10h30</div>
+                            <div class="task-title">🚗 Route → Drumshanbo</div>
+                            <div class="task-detail">1h30</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="task-section">
+                    <div class="section-title">🍸 Distilleries</div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">12h</div>
+                            <div class="task-title">🍸 Shed Distillery</div>
+                            <div class="task-detail"><span class="tag tag-whiskey">🥃 Distillerie</span> Visite 1h + dégustation Drumshanbo Gunpowder Gin</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">13h15</div>
+                            <div class="task-title">🍽️ Déjeuner</div>
+                            <div class="task-detail"><span class="tag tag-food">🍽️ Food</span> Drumshanbo ou Carrick-on-Shannon</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">14h30</div>
+                            <div class="task-title">🚗 Route → Tullamore</div>
+                            <div class="task-detail">1h15</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">15h45</div>
+                            <div class="task-title">🥃 Tullamore D.E.W. Distillery</div>
+                            <div class="task-detail"><span class="tag tag-whiskey">🥃 Distillerie</span> Visite 1h30 + dégustation whiskey irlandais</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="task-section">
+                    <div class="section-title">🌲 Togher Woods</div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">17h15</div>
+                            <div class="task-title">🚗 Route → Portlaoise</div>
+                            <div class="task-detail">40 min</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">18h</div>
+                            <div class="task-title">🥾 Rando mari Togher</div>
+                            <div class="task-detail"><span class="tag tag-rando">🥾 Rando</span> Grande boucle (5-6 km, plat, 1h15) - forêt de chênes</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">🧶 Spot crochet Togher</div>
+                            <div class="task-detail"><span class="tag tag-crochet">🧶 Crochet</span> Petite boucle (2 km, plat, 30-45 min) / Spot : bancs et tables pique-nique en forêt</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">19h30</div>
+                            <div class="task-title">🏨 Check-in Killeshin Hotel</div>
+                            <div class="task-detail">Installation</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">Soir</div>
+                            <div class="task-title">🍽️ Dîner hôtel ou Portlaoise</div>
+                            <div class="task-detail">Repos avant retour</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JOUR 10 - Jeu 7 mai -->
+        <div class="day-card">
+            <div class="day-header" onclick="toggleDay(this)">
+                <div>
+                    <div class="day-title">📅 Jeu 7 mai</div>
+                    <div class="day-subtitle">Dublin → Ferry retour</div>
+                </div>
+                <span class="day-arrow">▼</span>
+            </div>
+            <div class="day-content">
+                <div class="hotel-badge">⛴️ Nuit sur le ferry</div>
+                <div class="task-section">
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">9h</div>
+                            <div class="task-title">🏨 Check-out Killeshin</div>
+                            <div class="task-detail">Petit-déj tranquille + départ</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">10h</div>
+                            <div class="task-title">🚗 Route → Dublin</div>
+                            <div class="task-detail">1h15</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="task-section">
+                    <div class="section-title">🏛️ Dublin</div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">11h15</div>
+                            <div class="task-title">🚶 Temps libre Dublin</div>
+                            <div class="task-detail">Options : Temple Bar, St Stephen's Green, Grafton Street</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">🧶 Spot crochet Dublin</div>
+                            <div class="task-detail"><span class="tag tag-crochet">🧶 Crochet</span> Merrion Square parc - bancs, ambiance georgienne</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">12h30</div>
+                            <div class="task-title">🍽️ Déjeuner Dublin</div>
+                            <div class="task-detail"><span class="tag tag-food">🍽️ Food</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="task-section">
+                    <div class="section-title">⛴️ Retour</div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">~14h</div>
+                            <div class="task-title">🚗 Route vers Dublin Port</div>
+                            <div class="task-detail">Arriver 2h avant l'embarquement</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">16h30</div>
+                            <div class="task-title">⛴️ Embarquement ferry</div>
+                            <div class="task-detail">Dublin → Cherbourg / Arrivée le 8 mai matin</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JOUR 11 - Ven 8 mai -->
+        <div class="day-card">
+            <div class="day-header" onclick="toggleDay(this)">
+                <div>
+                    <div class="day-title">📅 Ven 8 mai</div>
+                    <div class="day-subtitle">Arrivée Cherbourg 🏠</div>
+                </div>
+                <span class="day-arrow">▼</span>
+            </div>
+            <div class="day-content">
+                <div class="task-section">
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-time">Matin</div>
+                            <div class="task-title">⛴️ Arrivée Cherbourg</div>
+                            <div class="task-detail">Bienvenue à la maison ! 🍀</div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">🚗 Route retour maison</div>
+                            <div class="task-detail">Avec plein de souvenirs !</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const saved = localStorage.getItem('irlandeChecklist2026');
+            if (saved) {
+                const checked = JSON.parse(saved);
+                const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach((cb, index) => {
+                    if (checked[index]) {
+                        cb.checked = true;
+                        cb.closest('.task').classList.add('checked');
+                    }
+                });
+            }
+            updateProgress();
+        });
+
+        function toggleDay(header) {
+            const card = header.closest('.day-card');
+            card.classList.toggle('open');
+        }
+
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const total = checkboxes.length;
+            const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            
+            const percent = Math.round((checked / total) * 100);
+            document.getElementById('progressFill').style.width = percent + '%';
+            document.getElementById('progressText').textContent = checked + '/' + total;
+
+            checkboxes.forEach(cb => {
+                if (cb.checked) {
+                    cb.closest('.task').classList.add('checked');
+                } else {
+                    cb.closest('.task').classList.remove('checked');
+                }
+            });
+
+            const states = Array.from(checkboxes).map(cb => cb.checked);
+            localStorage.setItem('irlandeChecklist2026', JSON.stringify(states));
+        }
+    </script>
+
+
+</body></html>
